@@ -1,5 +1,3 @@
 var example
-var example = 'some string'
+example = 'some string'
 console.log(example)
-
-
