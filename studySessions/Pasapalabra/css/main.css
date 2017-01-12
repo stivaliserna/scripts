@@ -1,0 +1,41 @@
+body {
+  background: url("../img/bulb.png");
+}
+
+.wrapper {
+  width: 38em;
+  overflow: hidden;
+}
+
+.title h1 {
+  font-family: 'Fira Sans Extra Condensed', sans-serif;
+  font-size: 6em;
+  float: left;
+  color: white;
+  margin-left: 1.8em;
+  font-weight: bold;
+  max-width: 3em;
+  margin-bottom: 40px;
+}
+
+.link a i{
+  color: #098caa;
+  font-size: 4em;
+  float: left;
+  margin-top: 3em;
+  margin-left: 1em;
+}
+
+.divider {
+  max-width: 100px;
+  border-color: #098caa;
+  margin-left: 11em;
+}
+
+.brief p {
+  font-size: 1.1em;
+  font-family: 'Raleway', sans-serif;
+  color: white;
+  max-width: 28em;
+  margin-left: 10em;
+}

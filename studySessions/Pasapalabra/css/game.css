@@ -1,0 +1,89 @@
+body {
+  background-color: #231f20;
+}
+
+.demo {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 2em;
+  color: white;
+  text-align: center;
+  margin-top: 2em;
+}
+
+.letter-list {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+  margin-top: 7em;
+  display: block;
+}
+
+.letter-list > li {
+  border-radius: 2em;
+  border: 1px solid;
+  border-color: #8C8C86;
+  margin-right: 2px;
+  color: white;
+  display: inline-block;
+  font-size: 1.2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  width: 2em;
+  font-family: fantasy;
+}
+
+.letter-list > li.good {
+  border-color: #4B9C34;
+  color: #4B9C34;
+}
+
+.letter-list > li.bad {
+  border-color: #B52928;
+  color: #B52928;
+}
+
+.answer-form {
+  margin-top: 4em;
+  text-align: center;
+}
+
+.answer-form > h3 {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 1em;
+  color: #969681;
+}
+
+input {
+  font-size: 17px;
+  border-radius: 0;
+  height: 1.5em;
+  border: 1px solid grey;
+}
+
+button {
+  border-radius: 5em;
+  font-size: 20px;
+  font-family: 'PT Sans', sans-serif;
+  border: 1px solid;
+  background-color: #1E1F1D;
+  color: white;
+}
+
+button:hover {
+  background-color: #969681;
+}
+
+.start a {
+  display: block;
+  text-align: center;
+  color: #969681;
+  text-decoration: none;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 1.3em;
+  margin-top: 6em;
+}
+
+.start a:hover {
+  color: #098caa;
+}
