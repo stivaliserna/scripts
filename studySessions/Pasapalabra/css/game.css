@@ -2,7 +2,11 @@ body {
   background-color: #231f20;
 }
 
-.demo {
+.hidden {
+  display: none;
+}
+
+.result {
   font-family: 'PT Sans', sans-serif;
   font-size: 2em;
   color: white;
@@ -75,15 +79,17 @@ button:hover {
 }
 
 .start a {
-  display: block;
-  text-align: center;
   color: #969681;
-  text-decoration: none;
+  display: block;
   font-family: 'PT Sans', sans-serif;
   font-size: 1.3em;
   margin-top: 6em;
+  outline: none;
+  text-align: center;
+  text-decoration: none;
 }
 
 .start a:hover {
   color: #098caa;
 }
+

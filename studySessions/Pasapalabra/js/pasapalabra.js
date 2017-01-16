@@ -152,11 +152,12 @@ function answerFormSubmitHandler (event) {
     currentLetter.classList.add('bad')
   }
 
-  setQuestion(++currentQuestion)
-
-  getRightElements()
-
-  answerForm.reset()
+  if (currentQuestion >= questionList.length - 1) {
+    showResults()
+  } else {
+    setQuestion(++currentQuestion)
+    answerForm.reset()
+  }
 }
 
 function setQuestion (num) {
@@ -164,7 +165,10 @@ function setQuestion (num) {
   question.innerText = questionList[num].question
 }
 
-function getRightElements () {
+function showResults () {
   var correctAnswers = document.querySelectorAll('.good')
-  document.querySelector('.demo').innerHTML = 'You got ' + correctAnswers.length + ' correct answers! ^^'
+  var result = document.querySelector('.result')
+  result.innerHTML = 'You got ' + correctAnswers.length + ' correct answers! ^^'
+  result.classList.remove('hidden')
+  answerForm.classList.add('hidden')
 }
