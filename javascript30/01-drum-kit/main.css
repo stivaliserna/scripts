@@ -7,15 +7,23 @@
 
 .key {
   border: 2px solid black;
-  width: 4em;
+  width: 5em;
   padding: 1em;
   margin-right: 1em;
   text-align: center;
   transition: all .07s ease;
 }
 
+p, span {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+p {
+  font-size: 1.2em;
+}
+
 .playing {
   transform: scale(1.1);
-  border-color: #ffc600;
-  box-shadow: 0 0 1rem #ffc600;
+  border-color: #39103B;
+  box-shadow: 0 0 1rem #39103B;
 }
