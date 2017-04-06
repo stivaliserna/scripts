@@ -1,0 +1,21 @@
+.keys {
+	display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.key {
+  border: 2px solid black;
+  width: 4em;
+  padding: 1em;
+  margin-right: 1em;
+  text-align: center;
+  transition: all .07s ease;
+}
+
+.playing {
+  transform: scale(1.1);
+  border-color: #ffc600;
+  box-shadow: 0 0 1rem #ffc600;
+}
