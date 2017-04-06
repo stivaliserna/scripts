@@ -6,3 +6,11 @@ window.addEventListener('keydown', function(e) {
   audio.play()
   key.classList.add('playing')
 })
+
+function removeTransition(e) {
+  if (e.propertyName !== 'transform')
+  this.classList.remove('playing')
+}
+
+let keys = document.querySelectorAll('.key')
+keys.forEach(key => key.addEventListener('transitionend', removeTransition))
