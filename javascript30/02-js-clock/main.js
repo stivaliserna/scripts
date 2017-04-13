@@ -32,7 +32,7 @@ function setDate () {
     minutes = '0' + minutes
   }
 
-  document.querySelector('.digital').innerText = hours + ': ' + minutes + ' ' + meridiem
+  document.querySelector('.digital').innerText = hours + ':' + minutes + ' ' + meridiem
 }
 
 setInterval(setDate, 1000)

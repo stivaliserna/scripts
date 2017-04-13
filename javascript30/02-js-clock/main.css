@@ -33,8 +33,14 @@ body {
   transition-timing-function: cubic-bezier(0, 1.71, 0.58, 1);
 }
 
+.hours-hand {
+  background-color: #FF1132;
+}
+
 .digital {
   font-size: 2em;
   margin-top: 2em;
   text-align: center;
+  font-family: 'Oxygen', sans-serif;
+  color: #70706F;
 }
