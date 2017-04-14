@@ -30,3 +30,7 @@ img {
   filter: blur(var(--blur));
   background: var(--base);
 }
+
+.hl {
+  color: var(--base);
+}
