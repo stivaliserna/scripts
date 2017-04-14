@@ -1,0 +1,32 @@
+:root {
+  --base: #ffc600;
+  --blur: 10px;
+  --spacing: 10px;
+}
+
+h2, .controls {
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 1em;
+  font-family: 'Poppins', sans-serif;
+  color: #2E2E2D;
+}
+
+.controls {
+  margin-bottom: 3em;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2em;
+  color: #2E2E2D;
+}
+
+img {
+  margin-bottom: 3em;
+  width: 30em;
+  display: block;
+  margin: 0 auto; 
+  padding: var(--spacing);
+  filter: blur(var(--blur));
+  background: var(--base);
+}
