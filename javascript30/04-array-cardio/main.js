@@ -25,7 +25,7 @@ console.log(names)
 
 // Sort the inventors by birthday, oldest to youngest
 inventors.sort((a, b) => {
-  return b.year - a.year
+  return a.year - b.year
 })
 
 // How many years did all the inventors live?
@@ -34,14 +34,52 @@ inventors.reduce((acc, val) => {
 }, 0)
 
 // Sort the inventors by years lived
+var ordered = inventors.sort((a, b) => {
+  return (a.passed - a.year) - (b.passed - b.year)
+})
+
+console.table(ordered)
+
+// Create a list of boulevards in Paris that contain 'de' anywhere in the name
+// https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+let category = document.querySelector('.mw-category')
+let links = category.querySelectorAll('a')
+
+let items = links.map(boulevard => boulevard.text)
+
+function filterItems(query) {
+  return items.filter(function(el) {
+   return el.toLowerCase().indexOf(query.toLowerCase()) > -1;
+  })
+}
+
+console.log(filterItems('de'))
 
 
-// const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel',
-// 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem',
-// 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter',
-// 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester',
-// 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar',
-// 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra',
-// 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin',
-// 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh',
-// 'Biondo, Frank', 'Birrell, Augustine', 'Black Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William']
+const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel',
+'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem',
+'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter',
+'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester',
+'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar',
+'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra',
+'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin',
+'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh',
+'Biondo, Frank', 'Birrell, Augustine', 'Black Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William']
+
+
+// Sort the people alphanetically by last name
+let alpha = people.sort((a, b) => {
+  let aSplit = a.split(', ')
+  let bSplit = b.split(', ')
+
+  return aSplit - bSplit
+})
+
+// Sum up the instances of each of these 
+
+const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck', 'pogostick']
+
+let count = {}
+
+data.forEach(i => count[i] = (count[i] || 0) + 1)
