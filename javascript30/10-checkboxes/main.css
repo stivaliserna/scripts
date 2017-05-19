@@ -1,0 +1,42 @@
+.form-control, .tasks {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2em;
+}
+
+.form-control {
+  margin-top: 10%;
+  text-align: center;
+}
+
+.tasks {
+  margin: auto;
+  border: 2px solid #129080;
+  width: 15em;
+  height: 14em;
+  border-radius: 5px;
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #F1F1F1;
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+input[type="checkbox"] {
+  margin: 20px;
+}
+
+input:checked + label {
+  text-decoration: line-through;
+}
+
+label {
+  margin: 0;
+  transition: background 0.2s;
+  flex: 1;
+}
