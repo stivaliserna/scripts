@@ -1,0 +1,32 @@
+body {
+  font-family: 'Quattrocento Sans', sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #871246;
+  font-size: 2.5em;
+}
+
+p {
+  font-size: 1.5em;
+  color: #575C59;
+}
+
+button {
+  font-size: 1.5em;
+  border: none;
+  background-color: #FFF;
+  cursor: pointer;
+  color: #858C89;
+}
+
+button:hover {
+  opacity: .5;
+}
+
+#clue {
+  font-size: 3em;
+  color: #D66196;
+  font-family: 'Sacramento', cursive;
+}
