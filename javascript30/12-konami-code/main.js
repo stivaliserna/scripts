@@ -3,9 +3,17 @@ const secretCode = 'stefan'
 const clue = document.querySelector('button')
 const clueText = document.querySelector('#clue')
 
+const clues = [
+  'My rubber duck',
+  'kek',
+  'hue'
+]
+
+let currentClue = 0
+
 function clueTrigger () {
-  const text = 'My rubber duck'
-  clueText.innerHTML = text
+  clueText.innerHTML = clues[currentClue]
+  currentClue = (currentClue + 1) % clues.length
 }
 
 window.addEventListener('keyup', (e) => {
