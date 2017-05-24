@@ -1,0 +1,45 @@
+body {
+  background-color: #f7c50b;
+  font-family: 'Quattrocento Sans', sans-serif;
+}
+
+.section {
+  max-width: 40em;
+  background-color: #FFF;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2em;
+  color: #56218A;
+  padding-top: 1em;
+}
+
+p {
+  font-size: 1.5em;
+  padding: 0 1.5em 1em;
+  text-align: justify;
+}
+
+img {
+  width: 12em;
+  height: 10em;
+  padding: .7em;
+}
+
+.gug1 {
+  float: right;
+}
+
+.gug2 {
+  float: left;
+}
+
+.gug3 {
+  float: right;
+}
+
+.gug4 {
+  float: left;
+}
