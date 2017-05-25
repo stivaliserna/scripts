@@ -28,18 +28,30 @@ img {
   padding: .7em;
 }
 
-.gug1 {
-  float: right;
+.align-left {
+  float:left;
+  margin-right:20px;
 }
 
-.gug2 {
-  float: left;
+.align-right {
+  float:right;
+  margin-left:20px;
 }
 
-.gug3 {
-  float: right;
+.slide-in {
+  opacity:0;
+  transition:all .5s;
 }
 
-.gug4 {
-  float: left;
+.align-left.slide-in {
+  transform:translateX(-30%) scale(0.95);
+}
+
+.align-right.slide-in {
+  transform:translateX(30%) scale(0.95);
+}
+
+.slide-in.active {
+  opacity:1;
+  transform:translateX(0%) scale(1);
 }
