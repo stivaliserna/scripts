@@ -1,0 +1,10 @@
+{
+	"extends": [
+		"standard",
+		"angular"
+	],
+	"plugins": [
+		"standard",
+		"angular"
+	]
+}
