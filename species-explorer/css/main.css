@@ -1,0 +1,14 @@
+body {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+body section {
+  flex-grow: 1;
+}
+
+h3 {
+  text-align: center;
+}
