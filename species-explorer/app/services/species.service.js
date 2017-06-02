@@ -19,6 +19,13 @@ function SpeciesService (API_BASE_URL, $resource) {
         params: {
           op: 'getkingdomnames'
         }
+      },
+      getClasses: {
+        method: 'GET',
+        isArray: false,
+        params: {
+          op: 'getclassnames'
+        }
       }
     }
   )

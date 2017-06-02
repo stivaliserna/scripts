@@ -18,6 +18,22 @@ function main (SpeciesService) {
   function MainController () {
     const vm = this
 
-    vm.getKingdoms = SpeciesService.getKingdoms()
+    vm.selectKingdom = selectKingdom
+
+    activate()
+
+    function getClassesOfKingdom (kingdomName) {
+      return SpeciesService.getClasses({
+        kingdom: kingdomName
+      })
+    }
+
+    function selectKingdom (kingdomName) {
+      vm.classItems = getClassesOfKingdom(kingdomName)
+    }
+
+    function activate () {
+      vm.kingdomItems = SpeciesService.getKingdoms()
+    }
   }
 }
