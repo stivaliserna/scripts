@@ -1,11 +1,23 @@
-<h1>
-  Kingdoms
-</h1>
-<ul>
-  <li ng-click="main.selectKingdom(kingdom.KingdomCommonName)" ng-repeat="kingdom in main.kingdomItems.Kingdom" kingdom-item kingdom="kingdom">
-  </li>
-</ul>
-<ul>
-  <li ng-repeat="item in main.classItems.Class" class-item data="item">
-  </li>
-</ul>
+<section>
+  <h3>
+    Kingdoms
+  </h3>
+  <ul>
+    <li ng-click="main.selectKingdom(kingdom.KingdomCommonName)" ng-repeat="kingdom in main.kingdomItems.Kingdom" kingdom-item kingdom="kingdom">
+    </li>
+  </ul>
+</section>
+<section>
+  <h3>Class</h3>
+  <ul>
+    <li ng-click="main.selectClass(item.KingdomCommonName, item.ClassCommonName)" ng-repeat="item in main.classItems.Class" class-item data="item">
+    </li>
+  </ul>
+</section>
+<section>
+  <h3>Family</h3>
+  <ul>
+    <li ng-repeat="family in main.familyItems.Family" family-item family="family">
+    </li>
+  </ul>
+</section>

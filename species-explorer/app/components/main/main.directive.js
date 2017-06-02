@@ -19,6 +19,7 @@ function main (SpeciesService) {
     const vm = this
 
     vm.selectKingdom = selectKingdom
+    vm.selectClass = selectClass
 
     activate()
 
@@ -28,8 +29,19 @@ function main (SpeciesService) {
       })
     }
 
+    function getFamiliesOfClass (kingdomName, className) {
+      return SpeciesService.getFamilies({
+        kingdom: kingdomName,
+        class: className
+      })
+    }
+
     function selectKingdom (kingdomName) {
       vm.classItems = getClassesOfKingdom(kingdomName)
+    }
+
+    function selectClass (kingdomName, className) {
+      vm.familyItems = getFamiliesOfClass(kingdomName, className)
     }
 
     function activate () {
