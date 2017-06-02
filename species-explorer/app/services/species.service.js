@@ -16,6 +16,7 @@ function SpeciesService (API_BASE_URL, $resource) {
       getKingdoms: {
         method: 'GET',
         isArray: false,
+        cache: true,
         params: {
           op: 'getkingdomnames'
         }
@@ -23,6 +24,7 @@ function SpeciesService (API_BASE_URL, $resource) {
       getClasses: {
         method: 'GET',
         isArray: false,
+        cache: true,
         params: {
           op: 'getclassnames'
         }
@@ -30,6 +32,7 @@ function SpeciesService (API_BASE_URL, $resource) {
       getFamilies: {
         method: 'GET',
         isArray: false,
+        cache: true,
         params: {
           op: 'getfamilynames'
         }
