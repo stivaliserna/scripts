@@ -20,6 +20,7 @@ function main (SpeciesService) {
 
     vm.selectKingdom = selectKingdom
     vm.selectClass = selectClass
+    vm.selectFamily = selectFamily
 
     activate()
 
@@ -36,12 +37,22 @@ function main (SpeciesService) {
       })
     }
 
+    function getSpeciesOfFamily (familyName) {
+      return SpeciesService.getSpecies({
+        family: familyName
+      })
+    }
+
     function selectKingdom (kingdomName) {
       vm.classItems = getClassesOfKingdom(kingdomName)
     }
 
     function selectClass (kingdomName, className) {
       vm.familyItems = getFamiliesOfClass(kingdomName, className)
+    }
+
+    function selectFamily (familyName) {
+      vm.specieItems = getSpeciesOfFamily(familyName)
     }
 
     function activate () {
