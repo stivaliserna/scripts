@@ -36,6 +36,14 @@ function SpeciesService (API_BASE_URL, $resource) {
         params: {
           op: 'getfamilynames'
         }
+      },
+      getSpecies: {
+        method: 'GET',
+        isArray: false,
+        cache: true,
+        params: {
+          op: 'getspecies'
+        }
       }
     }
   )
