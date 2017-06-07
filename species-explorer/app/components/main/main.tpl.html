@@ -5,27 +5,27 @@
     </li>
   </ul>
 </section>
-<section>
+<section ng-if="main.classItems">
   <h3>Classes</h3>
   <ul>
     <li ng-click="main.selectClass(item.KingdomCommonName, item.ClassCommonName)" ng-repeat="item in main.classItems.Class" class-item data="item">
     </li>
   </ul>
 </section>
-<section>
+<section ng-if="main.familyItems">
   <h3>Families</h3>
   <ul>
     <li ng-click="main.selectFamily(family.FamilyCommonName)" ng-repeat="family in main.familyItems.Family" family-item family="family">
     </li>
   </ul>
 </section>
-<section>
+<section ng-if="main.specieItems">
   <h3>Species</h3>
   <ul>
     <li ng-click="main.selectSpecie(specie.TaxonID)" ng-repeat="specie in main.specieItems.Species" specie-item specie="specie">
     </li>
   </ul>
 </section>
-<section>
+<section ng-if="main.specie">
   <p id-item id-data="main.specie"></p>
 </section>
