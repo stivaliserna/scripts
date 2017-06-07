@@ -44,6 +44,14 @@ function SpeciesService (API_BASE_URL, $resource) {
         params: {
           op: 'getspecies'
         }
+      },
+      getSpeciesById: {
+        method: 'GET',
+        isArray: false,
+        cache: true,
+        params: {
+          op: 'getspeciesbyid'
+        }
       }
     }
   )

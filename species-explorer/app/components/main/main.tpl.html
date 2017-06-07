@@ -15,14 +15,17 @@
 <section>
   <h3>Families</h3>
   <ul>
-    <li ng-click="main.selectFamily(family.FamilyName)" ng-repeat="family in main.familyItems.Family" family-item family="family">
+    <li ng-click="main.selectFamily(family.FamilyCommonName)" ng-repeat="family in main.familyItems.Family" family-item family="family">
     </li>
   </ul>
 </section>
 <section>
   <h3>Species</h3>
   <ul>
-    <li ng-repeat="specie in main.specieItems.Species" specie-item specie="specie">
+    <li ng-click="main.selectSpecie(specie.TaxonID)" ng-repeat="specie in main.specieItems.Species" specie-item specie="specie">
     </li>
   </ul>
+</section>
+<section>
+  <p id-item id-data="main.specie"></p>
 </section>

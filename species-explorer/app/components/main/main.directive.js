@@ -21,6 +21,7 @@ function main (SpeciesService) {
     vm.selectKingdom = selectKingdom
     vm.selectClass = selectClass
     vm.selectFamily = selectFamily
+    vm.selectSpecie = selectSpecie
 
     activate()
 
@@ -43,6 +44,12 @@ function main (SpeciesService) {
       })
     }
 
+    function getSpecieById (taxonId) {
+      return SpeciesService.getSpeciesById({
+        taxonid: taxonId
+      })
+    }
+
     function selectKingdom (kingdomName) {
       vm.classItems = getClassesOfKingdom(kingdomName)
     }
@@ -53,6 +60,10 @@ function main (SpeciesService) {
 
     function selectFamily (familyName) {
       vm.specieItems = getSpeciesOfFamily(familyName)
+    }
+
+    function selectSpecie (taxonId) {
+      vm.specie = getSpecieById(taxonId)
     }
 
     function activate () {
