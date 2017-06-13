@@ -13,8 +13,21 @@ function kingdomItem (SpeciesService) {
     },
     bindToController: true
   }
+}
 
-  function kingdomItemController () {
+kingdomItemController.$inject = [
+  '$scope',
+  'defaultURL',
+  'ImgService'
+]
 
-  }
+function kingdomItemController ($scope, defaultURL, ImgService) {
+  const vm = this
+
+  $scope.$watch('kingdomItem.kingdom', function (newValue) {
+    if (angular.isUndefined(newValue)) return
+    ImgService.getKingdomURL(newValue.KingdomCommonName).then(function (url) {
+      vm.itemPicURL = url || defaultURL
+    })
+  })
 }

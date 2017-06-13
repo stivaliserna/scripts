@@ -11,7 +11,18 @@ angular
 function ImgService ($q, SpeciesService) {
   return {
     getFamilyURL: getFamilyURL,
-    getClassURL: getClassURL
+    getClassURL: getClassURL,
+    getKingdomURL: getKingdomURL
+  }
+
+  function getKingdomURL (kingdomName) {
+    return getClassesOfKingdom(kingdomName).then(function (classes) {
+      if (!classes || !classes.length) {
+        return $q.resolve(null)
+      } else {
+        return pickRandomImgUrlOfClasses(classes, [])
+      }
+    })
   }
 
   function getClassURL (kingdomName, className) {
@@ -34,6 +45,26 @@ function ImgService ($q, SpeciesService) {
         // ...otherwise, pick one and hit the API to get its details,
         // and pass it over to the next Promise#then
         return pickRandomImgUrlOfSpecies(species, [])
+      }
+    })
+  }
+
+  function pickRandomImgUrlOfClasses (classes, checkedClassNames) {
+    if (classes.length === checkedClassNames.length) {
+      return $q.resolve(null)
+    }
+
+    let randomClass = pickRandomElement(classes)
+
+    if (checkedClassNames.includes(randomClass.ClassCommonName)) {
+      return pickRandomImgUrlOfClasses(classes, checkedClassNames)
+    }
+
+    return getClassURL(randomClass.KingdomCommonName, randomClass.ClassCommonName).then(function (url) {
+      if (url) {
+        return $q.resolve(url)
+      } else {
+        return pickRandomImgUrlOfClasses(classes, checkedClassNames.concat(randomClass.ClassCommonName))
       }
     })
   }
@@ -101,6 +132,14 @@ function ImgService ($q, SpeciesService) {
   function getRandomInt (min, max) {
     // Taken from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#Getting_a_random_integer_between_two_values
     return Math.floor(Math.random() * (max - min)) + min
+  }
+
+  function getClassesOfKingdom (kingdomName) {
+    return SpeciesService.getClasses({
+      kingdom: kingdomName
+    }).$promise.then(function (classes) {
+      return $q.resolve(classes.Class)
+    })
   }
 
   function getFamiliesOfClass (kingdomName, className) {
