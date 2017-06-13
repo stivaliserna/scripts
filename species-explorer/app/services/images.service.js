@@ -2,11 +2,7 @@
 
 angular
   .module('speciesApp')
-  .factory('ImgService', [
-    '$q',
-    'SpeciesService',
-    ImgService
-  ])
+  .factory('ImgService', ['$q', 'SpeciesService', ImgService])
 
 function ImgService ($q, SpeciesService) {
   return {
@@ -60,11 +56,17 @@ function ImgService ($q, SpeciesService) {
       return pickRandomImgUrlOfClasses(classes, checkedClassNames)
     }
 
-    return getClassURL(randomClass.KingdomCommonName, randomClass.ClassCommonName).then(function (url) {
+    return getClassURL(
+      randomClass.KingdomCommonName,
+      randomClass.ClassCommonName
+    ).then(function (url) {
       if (url) {
         return $q.resolve(url)
       } else {
-        return pickRandomImgUrlOfClasses(classes, checkedClassNames.concat(randomClass.ClassCommonName))
+        return pickRandomImgUrlOfClasses(
+          classes,
+          checkedClassNames.concat(randomClass.ClassCommonName)
+        )
       }
     })
   }
@@ -84,7 +86,10 @@ function ImgService ($q, SpeciesService) {
       if (url) {
         return $q.resolve(url)
       } else {
-        return pickRandomImgUrlOfFamilies(families, checkedFamilyNames.concat(randomFamilyName))
+        return pickRandomImgUrlOfFamilies(
+          families,
+          checkedFamilyNames.concat(randomFamilyName)
+        )
       }
     })
   }
@@ -116,7 +121,10 @@ function ImgService ($q, SpeciesService) {
         return $q.resolve(theSingleSpecies.Profile.Image.URL)
       } else {
         // ...otherwise, return the default image URL
-        return pickRandomImgUrlOfSpecies(species, chekedIds.concat(randomSpeciesTaxonId))
+        return pickRandomImgUrlOfSpecies(
+          species,
+          chekedIds.concat(randomSpeciesTaxonId)
+        )
       }
     })
   }

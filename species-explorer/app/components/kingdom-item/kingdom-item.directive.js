@@ -1,6 +1,4 @@
-angular
-  .module('speciesApp')
-  .directive('kingdomItem', kingdomItem)
+angular.module('speciesApp').directive('kingdomItem', kingdomItem)
 
 function kingdomItem (SpeciesService) {
   return {
@@ -15,11 +13,7 @@ function kingdomItem (SpeciesService) {
   }
 }
 
-kingdomItemController.$inject = [
-  '$scope',
-  'defaultURL',
-  'ImgService'
-]
+kingdomItemController.$inject = ['$scope', 'defaultURL', 'ImgService']
 
 function kingdomItemController ($scope, defaultURL, ImgService) {
   const vm = this

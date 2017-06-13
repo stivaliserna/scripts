@@ -1,6 +1,4 @@
-angular
-  .module('speciesApp')
-  .directive('classItem', classItem)
+angular.module('speciesApp').directive('classItem', classItem)
 
 function classItem (SpeciesService) {
   return {
@@ -15,18 +13,17 @@ function classItem (SpeciesService) {
   }
 }
 
-ClassItemController.$inject = [
-  '$scope',
-  'defaultURL',
-  'ImgService'
-]
+ClassItemController.$inject = ['$scope', 'defaultURL', 'ImgService']
 
 function ClassItemController ($scope, defaultURL, ImgService) {
   const vm = this
 
   $scope.$watch('classItem.data', function (newValue) {
     if (angular.isUndefined(newValue)) return
-    ImgService.getClassURL(newValue.KingdomCommonName, newValue.ClassCommonName).then(function (url) {
+    ImgService.getClassURL(
+      newValue.KingdomCommonName,
+      newValue.ClassCommonName
+    ).then(function (url) {
       vm.itemPicURL = url || defaultURL
     })
   })

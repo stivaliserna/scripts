@@ -1,6 +1,4 @@
-angular
-  .module('speciesApp')
-  .directive('familyItem', familyItem)
+angular.module('speciesApp').directive('familyItem', familyItem)
 
 function familyItem (ImgService) {
   return {
@@ -15,11 +13,7 @@ function familyItem (ImgService) {
   }
 }
 
-FamilyItemController.$inject = [
-  '$scope',
-  'defaultURL',
-  'ImgService'
-]
+FamilyItemController.$inject = ['$scope', 'defaultURL', 'ImgService']
 
 function FamilyItemController ($scope, defaultURL, ImgService) {
   const vm = this

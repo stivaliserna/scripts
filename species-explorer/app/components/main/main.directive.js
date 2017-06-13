@@ -1,10 +1,6 @@
-angular
-  .module('speciesApp')
-  .directive('main', main)
+angular.module('speciesApp').directive('main', main)
 
-main.$inject = [
-  'SpeciesService'
-]
+main.$inject = ['SpeciesService']
 
 function main (SpeciesService) {
   return {
@@ -12,7 +8,6 @@ function main (SpeciesService) {
     controller: MainController,
     controllerAs: 'main',
     templateUrl: '/app/components/main/main.tpl.html'
-
   }
 
   function MainController () {

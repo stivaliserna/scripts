@@ -1,6 +1,4 @@
-angular
-  .module('speciesApp')
-  .directive('idItem', idItem)
+angular.module('speciesApp').directive('idItem', idItem)
 
 function idItem (SpeciesService) {
   return {
@@ -14,6 +12,5 @@ function idItem (SpeciesService) {
     bindToController: true
   }
 
-  function IdItemController () {
-  }
+  function IdItemController () {}
 }
