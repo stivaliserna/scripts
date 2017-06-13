@@ -17,17 +17,18 @@ function familyItem (ImgService) {
 
 FamilyItemController.$inject = [
   '$scope',
+  'defaultURL',
   'ImgService'
 ]
 
-function FamilyItemController ($scope, ImgService) {
+function FamilyItemController ($scope, defaultURL, ImgService) {
   const vm = this
 
   $scope.$watch('familyItem.family', function (newValue) {
     if (angular.isUndefined(newValue)) return
 
     ImgService.getFamilyURL(newValue.FamilyName).then(function (url) {
-      vm.itemPicURL = url
+      vm.itemPicURL = url || defaultURL
     })
   })
 }

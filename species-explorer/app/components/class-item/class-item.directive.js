@@ -13,7 +13,21 @@ function classItem (SpeciesService) {
     },
     bindToController: true
   }
+}
 
-  function ClassItemController () {
-  }
+ClassItemController.$inject = [
+  '$scope',
+  'defaultURL',
+  'ImgService'
+]
+
+function ClassItemController ($scope, defaultURL, ImgService) {
+  const vm = this
+
+  $scope.$watch('classItem.data', function (newValue) {
+    if (angular.isUndefined(newValue)) return
+    ImgService.getClassURL(newValue.KingdomCommonName, newValue.ClassCommonName).then(function (url) {
+      vm.itemPicURL = url || defaultURL
+    })
+  })
 }

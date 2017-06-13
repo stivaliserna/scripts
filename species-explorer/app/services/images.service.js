@@ -9,10 +9,19 @@ angular
   ])
 
 function ImgService ($q, SpeciesService) {
-  const defaultURL = 'https://pbs.twimg.com/profile_images/600060188872155136/st4Sp6Aw.jpg'
-
   return {
-    getFamilyURL: getFamilyURL
+    getFamilyURL: getFamilyURL,
+    getClassURL: getClassURL
+  }
+
+  function getClassURL (kingdomName, className) {
+    return getFamiliesOfClass(kingdomName, className).then(function (families) {
+      if (!families || !families.length) {
+        return $q.resolve(null)
+      } else {
+        return pickRandomImgUrlOfFamilies(families, [])
+      }
+    })
   }
 
   function getFamilyURL (familyName) {
@@ -20,11 +29,31 @@ function ImgService ($q, SpeciesService) {
       if (!species || !species.length) {
         // If the API returns no species for the requested family,
         // don't bother to pick a random species since it doesn't exists
-        return $q.resolve(defaultURL)
+        return $q.resolve(null)
       } else {
         // ...otherwise, pick one and hit the API to get its details,
         // and pass it over to the next Promise#then
-        return getRadomImageUrl(species, [])
+        return pickRandomImgUrlOfSpecies(species, [])
+      }
+    })
+  }
+
+  function pickRandomImgUrlOfFamilies (families, checkedFamilyNames) {
+    if (families.length === checkedFamilyNames.length) {
+      return $q.resolve(null)
+    }
+
+    let randomFamilyName = pickRandomElement(families).FamilyName
+
+    if (checkedFamilyNames.includes(randomFamilyName)) {
+      return pickRandomImgUrlOfFamilies(families, checkedFamilyNames)
+    }
+
+    return getFamilyURL(randomFamilyName).then(function (url) {
+      if (url) {
+        return $q.resolve(url)
+      } else {
+        return pickRandomImgUrlOfFamilies(families, checkedFamilyNames.concat(randomFamilyName))
       }
     })
   }
@@ -34,15 +63,15 @@ function ImgService ($q, SpeciesService) {
   // return that image URL if it does exist,
   // otherwise, pick another candidate and repeat the process until an image URL is found,
   // but return the default image URL if the array has been exhausted.
-  function getRadomImageUrl (species, chekedIds) {
+  function pickRandomImgUrlOfSpecies (species, chekedIds) {
     if (species.length === chekedIds.length) {
-      return $q.resolve(defaultURL)
+      return $q.resolve(null)
     }
 
     let randomSpeciesTaxonId = pickRandomElement(species).TaxonID
 
     if (chekedIds.includes(randomSpeciesTaxonId)) {
-      return getRadomImageUrl(species, chekedIds)
+      return pickRandomImgUrlOfSpecies(species, chekedIds)
     }
 
     return getSpecieById(randomSpeciesTaxonId).then(function (theSingleSpecies) {
@@ -56,7 +85,7 @@ function ImgService ($q, SpeciesService) {
         return $q.resolve(theSingleSpecies.Profile.Image.URL)
       } else {
         // ...otherwise, return the default image URL
-        return getRadomImageUrl(species, chekedIds.concat(randomSpeciesTaxonId))
+        return pickRandomImgUrlOfSpecies(species, chekedIds.concat(randomSpeciesTaxonId))
       }
     })
   }
@@ -74,17 +103,26 @@ function ImgService ($q, SpeciesService) {
     return Math.floor(Math.random() * (max - min)) + min
   }
 
-  function getSpecieById (taxonId) {
-    return SpeciesService.getSpeciesById({
-      taxonid: taxonId
-    }).$promise.then(function (species) {
-      return $q.resolve(species.Species)
+  function getFamiliesOfClass (kingdomName, className) {
+    return SpeciesService.getFamilies({
+      kingdom: kingdomName,
+      class: className
+    }).$promise.then(function (families) {
+      return $q.resolve(families.Family)
     })
   }
 
   function getSpeciesOfFamily (familyName) {
     return SpeciesService.getSpecies({
       family: familyName
+    }).$promise.then(function (species) {
+      return $q.resolve(species.Species)
+    })
+  }
+
+  function getSpecieById (taxonId) {
+    return SpeciesService.getSpeciesById({
+      taxonid: taxonId
     }).$promise.then(function (species) {
       return $q.resolve(species.Species)
     })
