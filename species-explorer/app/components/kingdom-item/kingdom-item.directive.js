@@ -15,5 +15,6 @@ function kingdomItem (SpeciesService) {
   }
 
   function kingdomItemController () {
+
   }
 }

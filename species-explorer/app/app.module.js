@@ -1,5 +1,6 @@
 /* global angular */
 
 angular.module('speciesApp', [
-  'ngResource'
+  'ngResource',
+  'angular-cache'
 ])
