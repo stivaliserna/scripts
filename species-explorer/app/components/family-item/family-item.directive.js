@@ -2,7 +2,7 @@ angular
   .module('speciesApp')
   .directive('familyItem', familyItem)
 
-function familyItem (PhotosService) {
+function familyItem (ImgService) {
   return {
     restrict: 'A',
     controller: FamilyItemController,
@@ -17,16 +17,16 @@ function familyItem (PhotosService) {
 
 FamilyItemController.$inject = [
   '$scope',
-  'PhotosService'
+  'ImgService'
 ]
 
-function FamilyItemController ($scope, PhotosService) {
+function FamilyItemController ($scope, ImgService) {
   const vm = this
 
   $scope.$watch('familyItem.family', function (newValue) {
     if (angular.isUndefined(newValue)) return
 
-    PhotosService.getFamilyURL(newValue.FamilyName).then(function (url) {
+    ImgService.getFamilyURL(newValue.FamilyName).then(function (url) {
       vm.itemPicURL = url
     })
   })

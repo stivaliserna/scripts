@@ -2,13 +2,13 @@
 
 angular
   .module('speciesApp')
-  .factory('PhotosService', [
+  .factory('ImgService', [
     '$q',
     'SpeciesService',
-    PhotosService
+    ImgService
   ])
 
-function PhotosService ($q, SpeciesService) {
+function ImgService ($q, SpeciesService) {
   const defaultURL = 'https://pbs.twimg.com/profile_images/600060188872155136/st4Sp6Aw.jpg'
 
   return {
