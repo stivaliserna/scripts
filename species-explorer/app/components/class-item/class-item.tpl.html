@@ -1,3 +1,3 @@
 <p>Class name: {{ classItem.data.ClassName }}</p>
 <p>Common name: {{ classItem.data.ClassCommonName }}</p>
-<img ng-src="{{ classItem.itemPicURL }}" alt="image">
+<img nf-if="classItem.itemPicURL" ng-src="{{ classItem.itemPicURL }}" alt="image">

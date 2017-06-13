@@ -1,3 +1,3 @@
 <p>Family name: {{ familyItem.family.FamilyName }}</p>
 <p>Common name: {{ familyItem.family.FamilyCommonName }}</p>
-<img ng-src="{{ familyItem.itemPicURL }}" alt="image">
+<img nf-if="familyItem.itemPicURL" ng-src="{{ familyItem.itemPicURL }}" alt="image">
