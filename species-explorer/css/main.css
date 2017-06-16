@@ -1,15 +1,25 @@
 body {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
 }
 
-body section {
-  flex-grow: 1;
+section {
+  align-items: center;
+  flex: 1;
 }
 
-h3 {
+ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+li {
+  list-style: none;
+  padding: 0 2em 2em 2em;
+}
+
+h3, h4, p, img {
   text-align: center;
 }
 
