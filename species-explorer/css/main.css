@@ -28,3 +28,11 @@ img {
   height: 15em;
   border-radius: 100%;
 }
+
+.block {
+  width: 3em;
+  height: 100vh;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}

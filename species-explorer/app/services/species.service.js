@@ -4,27 +4,16 @@ angular
   .module('speciesApp')
   .factory('SpeciesService', [
     'API_BASE_URL',
-    'CacheFactory',
     '$resource',
     SpeciesService
   ])
 
-function SpeciesService (API_BASE_URL, CacheFactory, $resource) {
-  if (!CacheFactory.get('speciesLocalStorageCache')) {
-    CacheFactory.createCache('speciesLocalStorageCache', {
-      deleteOnExpire: 'aggressive',
-      recycleFreq: 60000,
-      storageMode: 'localStorage'
-    })
-  }
-
-  var speciesLocalStorageCache = CacheFactory.get('speciesLocalStorageCache')
-
+function SpeciesService (API_BASE_URL, $resource) {
   return $resource(API_BASE_URL, null, {
     getKingdoms: {
       method: 'GET',
       isArray: false,
-      cache: speciesLocalStorageCache,
+      cache: true,
       params: {
         op: 'getkingdomnames'
       }
@@ -32,7 +21,7 @@ function SpeciesService (API_BASE_URL, CacheFactory, $resource) {
     getClasses: {
       method: 'GET',
       isArray: false,
-      cache: speciesLocalStorageCache,
+      cache: true,
       params: {
         op: 'getclassnames'
       }
@@ -40,7 +29,7 @@ function SpeciesService (API_BASE_URL, CacheFactory, $resource) {
     getFamilies: {
       method: 'GET',
       isArray: false,
-      cache: speciesLocalStorageCache,
+      cache: true,
       params: {
         op: 'getfamilynames'
       }
@@ -48,7 +37,7 @@ function SpeciesService (API_BASE_URL, CacheFactory, $resource) {
     getSpecies: {
       method: 'GET',
       isArray: false,
-      cache: speciesLocalStorageCache,
+      cache: true,
       params: {
         op: 'getspecies'
       }
@@ -56,7 +45,7 @@ function SpeciesService (API_BASE_URL, CacheFactory, $resource) {
     getSpeciesById: {
       method: 'GET',
       isArray: false,
-      cache: speciesLocalStorageCache,
+      cache: true,
       params: {
         op: 'getspeciesbyid'
       }

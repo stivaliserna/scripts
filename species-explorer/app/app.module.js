@@ -1,3 +1,3 @@
 /* global angular */
 
-angular.module('speciesApp', ['ngResource', 'angular-cache'])
+angular.module('speciesApp', ['ngResource'])

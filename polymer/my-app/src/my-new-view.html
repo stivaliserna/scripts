@@ -1,5 +1,6 @@
-<link rel="stylesheet" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="my-carousel.html">
 
 <dom-module id="my-new-view">
   <template>
@@ -8,10 +9,26 @@
 				display: block;
 				padding: 16px;
 			}
+
+      img {
+        width: 80em;
+        height: 40em;
+      }
+
 		</style>
 
 		<h1>New view</h1>
-		<paper-checkbox>Ready to deploy!</paper-checkbox>
+		<div>
+      <paper-checkbox>Ready to deploy!</paper-checkbox>
+    </div>
+
+		<my-carousel>
+      <img src="https://app-layout-assets.appspot.com/assets/bg1.jpg">
+      <img src="https://app-layout-assets.appspot.com/assets/bg2.jpg">
+      <img src="https://app-layout-assets.appspot.com/assets/bg3.jpg">
+      <img src="https://app-layout-assets.appspot.com/assets/bg4.jpg">
+    </my-carousel>
+
 	</template>
 
 	<script>
