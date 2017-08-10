@@ -15,7 +15,7 @@
       button {
         position: absolute;
         top: calc(50% - 20px);
-        padding: 20px;
+        padding: 0;
         line-height: 40px;
         border: none;
         background: none;
@@ -28,7 +28,6 @@
       button:hover,
       button:focus {
         opacity: 1;
-        outline: none;
       }
 
       #prevBtn {
@@ -84,25 +83,76 @@
         if (selected) selected.setAttribute('selected', '')
 
         if (selected) {
-          this.$.prevBtn.disabled = !selected.previousElementSibling
-          this.$.nextBtn.disabled = !selected.nextElementSibling
+          this.$.prevBtn.disabled = !selected.previousElementSibling;
+          this.$.nextBtn.disabled = !selected.nextElementSibling;
+
+          this._loadImage(selected);
+          this._loadImage(selected.previousElementSibling);
+          this._loadImage(selected.nextElementSibling);
         } else {
-          this.$.prevBtn.disabled = true
-          this.$.nextBtn.disabled = true
+          this.$.prevBtn.disabled = true;
+          this.$.nextBtn.disabled = true;
         }
       }
 
       previous() {
-        const elem = this.selected && this.selected.previousElementSibling
+        const elem = this.selected && this.selected.previousElementSibling;
         if (elem) {
-          this.selected = elem
+          // Setup transition start state
+          const oldSelected = this.selected;
+          this._translateX(oldSelected, 0);
+          this._translateX(elem, -this.offsetWidth);
+
+          // Start the transition
+          this.selected = elem;
+          this._translateX(oldSelected, this.offsetWidth, true /* transition */);
+          this._translateX(elem, 0, true /* transition */);
         }
       }
 
       next() {
-        const elem = this.selected && this.selected.nextElementSibling
+        const elem = this.selected && this.selected.nextElementSibling;
         if (elem) {
-          this.selected = elem
+          // Setup transition start state
+          const oldSelected = this.selected;
+          this._translateX(oldSelected, 0);
+          this._translateX(elem, this.offsetWidth);
+
+          // Start the transition
+          this.selected = elem;
+          this._translateX(oldSelected, -this.offsetWidth, true /* transition */);
+          this._translateX(elem, 0, true /* transition */);
+        }
+      }
+
+      _loadImage(img) {
+        if (img && !img.src) {
+          img.src = img.getAttribute('data-src');
+        }
+      }
+
+      _translateX(elem, x, transition) {
+        elem.style.display = 'block';
+        elem.style.transition = transition ? 'transform 0.2s' : '';
+        elem.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+      }
+
+      ready() {
+        super.ready();
+        requestAnimationFrame(this._installListeners.bind(this));
+      }
+
+      _installListeners() {
+        this.addEventListener('transitionend', this._resetChildrenStyles.bind(this));
+      }
+
+      _resetChildrenStyles() {
+        let elem = this.firstElementChild;
+        while (elem) {
+          elem.style.display = '';
+          elem.style.transition = '';
+          elem.style.transform = '';
+          elem = elem.nextElementSibling;
         }
       }
     }
