@@ -1,20 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <title>Snowpack App</title>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" href="/index.css" />
-  <title>Snowpack App</title>
-</head>
+  <body>
+    <div class="container">
+      <div class="clouds"></div>
+      <div id="canvas"></div>
+    </div>
+    <script type="x-shader/x-vertex" id="vertexshader">
 
-<body>
-  <div class="container">
-    <div class="clouds"></div>
-    <div id="canvas"></div>
-  </div>
-  <script type="module" src="/_dist_/index.js"></script>
-</body>
+      varying vec2 vUv;
 
+      void main() {
+
+        vUv = uv;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+
+      uniform sampler2D baseTexture;
+      uniform sampler2D bloomTexture;
+
+      varying vec2 vUv;
+
+      void main() {
+
+        gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
+
+      }
+    </script>
+    <script type="module" src="/_dist_/index.js"></script>
+  </body>
 </html>

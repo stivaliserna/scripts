@@ -15,28 +15,42 @@ let scene,
   hdrCubeRenderTarget,
   HEIGHT,
   WIDTH,
-  pink,
-  planet,
-  bigStar,
-  littleStar,
-  particles;
+  hdrEquirect,
+  tinky,
+  particles,
+  raycaster;
 
 const params = {
   color: 0x21024f,
   transmission: 0.9,
-  envMapIntensity: 1,
-  lightIntensity: 0.5,
-  exposure: 1,
+  envMapIntensity: 10,
+  lightIntensity: 1,
+  exposure: 0.5,
 };
 
 const spheres = [];
+
+const meshes = {};
+
+const generateTexture = () => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 2;
+  canvas.height = 2;
+
+  const context = canvas.getContext("2d");
+  context.fillStyle = "white";
+  context.fillRect(0, 1, 2, 1);
+
+  return canvas;
+};
 
 const createScene = () => {
   HEIGHT = window.innerHeight;
   WIDTH = window.innerWidth;
 
+  raycaster = new THREE.Raycaster();
+
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x5d0361, 10, 1500);
 
   aspectRatio = WIDTH / HEIGHT;
   fieldOfView = 60;
@@ -57,42 +71,44 @@ const createScene = () => {
     alpha: true,
     antialias: true,
   });
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(WIDTH, HEIGHT);
 
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 2;
 
   container = document.getElementById("canvas");
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", handleWindowResize, false);
 
-  let loader = new GLTFLoader();
-  loader.load("/pokemon.gltf", (gltf) => {
-    pink = gltf.scene;
-    pink.scale.set(70, 70, 70);
-    pink.children.forEach((el) => {
-      if (el.name === "Star") {
-        bigStar = el;
-        bigStar.position.y = -2;
-        bigStar.position.x = -2.5;
-        bigStar.position.z = 1;
-        bigStar.rotation.z = -0.5;
-      } else if (el.name === "Star2") {
-        littleStar = el;
-        littleStar.position.y = -2;
-        littleStar.position.x = 2;
-        littleStar.position.z = 0.7;
-        littleStar.rotation.z = 1;
-      } else if (el.name === "Planet") {
-        planet = el;
-        planet.position.y = 1.5;
-        planet.position.z = 1;
-      }
-    });
-    scene.add(pink);
-  });
+  scene.add(tinky);
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxDistance = 1000;
+  controls.maxAzimuthAngle = 1;
+  controls.minAzimuthAngle = -1;
+};
+
+const positionElements = () => {
+  meshes.bigStar.position.y = -1.7;
+  meshes.bigStar.position.x = -2.2;
+  meshes.bigStar.position.z = 0.8;
+  meshes.bigStar.rotation.z = -0.5;
+
+  meshes.littleStar.position.y = -1.75;
+  meshes.littleStar.position.x = 1.75;
+  meshes.littleStar.position.z = 0.6;
+  meshes.littleStar.rotation.z = 0.5;
+
+  meshes.planet.position.y = 1.3;
+  meshes.planet.position.x = 2.6;
+  meshes.planet.position.z = 1;
+
+  meshes.ClosedLeftEye.visible = false;
+  meshes.ClosedRightEye.visible = false;
 };
 
 const handleWindowResize = () => {
@@ -104,24 +120,16 @@ const handleWindowResize = () => {
 };
 
 const createLights = () => {
-  const ambientLight = new THREE.AmbientLight(0xaa54f0);
+  const ambientLight = new THREE.AmbientLight(0xaa54f0, 1);
 
-  const directionalLightFront = new THREE.DirectionalLight(0xffffff, 2);
-  directionalLightFront.position.set(-100, 150, 600);
+  const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+  directionalLight1.position.set(-2, 2, 5);
 
-  const directionalLightBack = new THREE.DirectionalLight(0xffffff, 2);
-  directionalLightBack.position.set(500, 120, 50);
+  const directionalLight2 = new THREE.DirectionalLight(0xfff000, 1);
+  directionalLight2.position.set(-2, 4, 4);
+  directionalLight2.castShadow = true;
 
-  // const spotLight = new THREE.SpotLight( 0x1D0F40 );
-  // spotLight.position.set( 300, 1000, 300 );
-  // spotLight.distance = 700;
-  // // spotLight.angle = 0.3;
-  // spotLight.intensity = 10;
-  // spotLight.penumbra = .5;
-
-  scene.add(ambientLight, directionalLightFront, directionalLightBack);
-  // const spotLightHelper = new THREE.SpotLightHelper( spotLight );
-  // scene.add( spotLightHelper );
+  scene.add(ambientLight, directionalLight1, directionalLight2);
 };
 
 const createBubbles = () => {
@@ -130,89 +138,71 @@ const createBubbles = () => {
   hdrEquirect.dispose();
   pmremGenerator.dispose();
 
-  const bubbleGeometry1 = new THREE.SphereBufferGeometry(170, 64, 32);
-  const bubbleGeometry2 = new THREE.SphereBufferGeometry(55, 64, 32);
-  const bubbleGeometry3 = new THREE.SphereBufferGeometry(30, 64, 32);
-  const bubbleGeometry4 = new THREE.SphereBufferGeometry(70, 64, 32);
-  const bubbleGeometry5 = new THREE.SphereBufferGeometry(10, 64, 32);
+  const bubbleTexture = new THREE.CanvasTexture(generateTexture());
+  bubbleTexture.repeat.set(1);
 
-  const texture = new THREE.CanvasTexture(generateTexture());
-  texture.repeat.set(1);
-
-  const material = new THREE.MeshPhysicalMaterial({
+  const bubbleMaterial = new THREE.MeshPhysicalMaterial({
     color: params.color,
     metalness: 0,
     roughness: 0,
-    alphaMap: texture,
+    alphaMap: bubbleTexture,
     alphaTest: 0.5,
     envMap: hdrCubeRenderTarget.texture,
     envMapIntensity: params.envMapIntensity,
     depthWrite: false,
-    transmission: params.transmission, // use material.transmission for glass materials
-    opacity: 1, // set material.opacity to 1 when material.transmission is non-zero
+    transmission: params.transmission,
+    opacity: 1,
     transparent: true,
   });
 
-  const material1b = new THREE.MeshPhysicalMaterial().copy(material);
-  material1b.side = THREE.BackSide;
+  const bubbleMaterial1b = new THREE.MeshPhysicalMaterial().copy(
+    bubbleMaterial
+  );
+  bubbleMaterial1b.side = THREE.BackSide;
 
-  let bubble1 = new THREE.Mesh(bubbleGeometry1, material1b);
+  const bubbleGeometry1 = new THREE.SphereBufferGeometry(170, 64, 32);
+  const bubbleGeometry2 = new THREE.SphereBufferGeometry(55, 64, 32);
+  const bubbleGeometry3 = new THREE.SphereBufferGeometry(30, 64, 32);
+  const bubbleGeometry4 = new THREE.SphereBufferGeometry(70, 64, 32);
 
-  let bubble2 = new THREE.Mesh(bubbleGeometry2, material1b);
+  let bubble1 = new THREE.Mesh(bubbleGeometry1, bubbleMaterial1b);
+  bubble1.position.z = 15;
+
+  let bubble2 = new THREE.Mesh(bubbleGeometry2, bubbleMaterial1b);
   bubble2.position.y = -135;
-  bubble2.position.x = -170;
+  bubble2.position.x = -175;
   bubble2.position.z = 75;
 
-  let bubble3 = new THREE.Mesh(bubbleGeometry3, material1b);
+  let bubble3 = new THREE.Mesh(bubbleGeometry3, bubbleMaterial1b);
   bubble3.position.y = -136;
   bubble3.position.x = 137;
   bubble3.position.z = 50;
 
-  let bubble4 = new THREE.Mesh(bubbleGeometry4, material1b);
+  let bubble4 = new THREE.Mesh(bubbleGeometry4, bubbleMaterial1b);
   bubble4.position.y = 100;
   bubble4.position.x = 210;
   bubble4.position.z = 70;
 
-  for (let i = 0; i < 20; i++) {
-    const mesh = new THREE.Mesh(bubbleGeometry5, material1b);
-
-    mesh.position.x = Math.random() * 1350 - 725;
-    mesh.position.y = Math.random() * 1350 - 725;
-    mesh.position.z = Math.random() * 1350 - 725;
-
-    mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 3 + 1;
-
-    scene.add(mesh);
-
-    spheres.push(mesh);
-  }
-
   scene.add(bubble1, bubble2, bubble3, bubble4);
-};
-
-const generateTexture = () => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 2;
-  canvas.height = 2;
-
-  const context = canvas.getContext("2d");
-  context.fillStyle = "white";
-  context.fillRect(0, 1, 2, 1);
-
-  return canvas;
 };
 
 const createParticles = () => {
   const particlesGeometry = new THREE.BufferGeometry();
 
-  const count = 300;
+  const color = new THREE.Color();
+  let components = [];
 
+  const count = 400;
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
 
   for (let i = 0; i < count; i++) {
+    if (i % 3 === 0) {
+      color.setHSL(Math.random(), 1, 0.5);
+      components = [color.r, color.g, color.b];
+    }
     positions[i] = (Math.random() - 0.5) * 1000;
-    colors[i] = Math.random();
+    colors[i] = components[i % 3];
   }
 
   particlesGeometry.setAttribute(
@@ -220,18 +210,17 @@ const createParticles = () => {
     new THREE.BufferAttribute(positions, 3)
   );
 
-  particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  particlesGeometry.setAttribute(
+    "color",
+    new THREE.BufferAttribute(colors, 3, true)
+  );
 
   const textureLoader = new THREE.TextureLoader();
   const particlesTexture = textureLoader.load("magic_05.png");
   const particlesMaterial = new THREE.PointsMaterial({
     size: 17,
-    // color: 0xF2D784,
-    // sizeAttenuation: true,
     alphaMap: particlesTexture,
     transparent: true,
-    // alphaTest: 0.001
-    // depthTest: false
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     vertexColors: true,
@@ -242,47 +231,142 @@ const createParticles = () => {
   scene.add(particles);
 };
 
+window.addEventListener("click", (event) => {
+  raycaster.setFromCamera(
+    new THREE.Vector2(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      -(event.clientY / window.innerHeight) * 2 + 1
+    ),
+    camera
+  );
+
+  const intersects = raycaster.intersectObjects(spheres);
+
+  for (let i = 0; i < intersects.length; i++) {
+    const sphere = intersects[i].object;
+    scene.remove(sphere);
+    spheres.splice(spheres.indexOf(sphere), 1);
+  }
+});
+
 const time = new THREE.Clock();
 
 const loop = () => {
   const elapsedTime = time.getElapsedTime();
-  const timer = 0.0001 * Date.now();
+  const elapsedTimeInMs = Math.round(elapsedTime * 1000);
 
   controls.update();
 
   particles.rotation.y = elapsedTime * 0.02;
 
-  for (let i = 0, il = spheres.length; i < il; i++) {
-    const sphere = spheres[i];
+  for (const sphere of spheres) {
+    const radius = 350;
+    const speed = 0.02 + 0.01 * sphere.randomness;
+    const heightAngle = elapsedTime * speed + sphere.randomness;
+    const thetaAngle = elapsedTime * -speed + sphere.randomness * 0.5;
 
-    sphere.position.x = 300 * Math.cos(timer + i);
-    sphere.position.y = 300 * Math.sin(timer + i * 1.1);
+    sphere.position.x = radius * Math.cos(thetaAngle) * Math.sin(heightAngle);
+    sphere.position.y = radius * Math.sin(thetaAngle) * Math.sin(heightAngle);
+    sphere.position.z = radius * Math.cos(heightAngle);
+  }
+
+  if (meshes.planet) {
+    meshes.planet.rotation.y += 0.002;
+    meshes.planet.rotation.z += 0.002;
+  }
+
+  if (elapsedTimeInMs % 3000 > 2750) {
+    meshes.RightEye.visible = false;
+    meshes.LeftEye.visible = false;
+    meshes.ClosedLeftEye.visible = true;
+    meshes.ClosedRightEye.visible = true;
+  } else {
+    meshes.ClosedLeftEye.visible = false;
+    meshes.ClosedRightEye.visible = false;
+    meshes.RightEye.visible = true;
+    meshes.LeftEye.visible = true;
   }
 
   renderer.render(scene, camera);
 
-  if (planet) {
-    planet.rotation.y += 0.002;
-    planet.rotation.z += 0.002;
-  }
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 2;
-
   requestAnimationFrame(loop);
 };
 
-const main = () => {
+const main = async () => {
+  hdrEquirect = await new RGBELoader()
+    .setDataType(THREE.UnsignedByteType)
+    .load("satara_night_no_lamps_1k.hdr");
+
+  await new Promise((resolve) => {
+    new GLTFLoader().load("/model.gltf", (gltf) => {
+      tinky = gltf.scene;
+      tinky.castShadow = true;
+      tinky.receiveShadow = true;
+      tinky.scale.set(80, 80, 80);
+
+      tinky.children.forEach((el) => {
+        el.receiveShadow = true;
+        meshes[el.name] = el;
+      });
+
+      resolve();
+    });
+  });
+
+  positionElements();
   createScene();
   createLights();
   createBubbles();
   createParticles();
 
+  const bubbleGeometry5 = new THREE.SphereBufferGeometry(10, 64, 32);
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquirect);
+  hdrEquirect.dispose();
+  pmremGenerator.dispose();
+
+  const bubbleTexture = new THREE.CanvasTexture(generateTexture());
+  bubbleTexture.repeat.set(1);
+
+  const bubbleMaterial = new THREE.MeshPhysicalMaterial({
+    color: params.color,
+    metalness: 0,
+    roughness: 0,
+    alphaMap: bubbleTexture,
+    alphaTest: 0.5,
+    envMap: hdrCubeRenderTarget.texture,
+    envMapIntensity: params.envMapIntensity,
+    depthWrite: false,
+    transmission: params.transmission,
+    opacity: 1,
+    transparent: true,
+  });
+
+  const bubbleMaterial1b = new THREE.MeshPhysicalMaterial().copy(
+    bubbleMaterial
+  );
+  bubbleMaterial1b.side = THREE.BackSide;
+
+  setInterval(() => {
+    if (spheres.length > 20) return;
+
+    const mesh = new THREE.Mesh(bubbleGeometry5, bubbleMaterial1b);
+
+    mesh.position.x = Math.random() * 1350 - 725;
+    mesh.position.y = Math.random() * 1350 - 725;
+    mesh.position.z = Math.random() * 1350 - 725;
+
+    mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 3 + 1;
+
+    mesh.randomness = Math.random() * 50;
+
+    spheres.push(mesh);
+
+    scene.add(mesh);
+  }, 2000);
+
   renderer.render(scene, camera);
   loop();
 };
 
-const hdrEquirect = new RGBELoader()
-  .setDataType(THREE.UnsignedByteType)
-  .load("royal_esplanade_1k.hdr", function () {
-    main();
-  });
+main();
